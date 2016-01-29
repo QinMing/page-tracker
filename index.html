@@ -21,62 +21,25 @@ This file is licensed under the MIT License. See LICENSE in the project root for
 <h1>Page Tracker</h1>
 
 <script type="text/javascript">
+  //This is my simple version of Google Analytics, tracking your IP address anonymously.
   var pre_filled_google_form_url = "https://docs.google.com/forms/d/14JwaHBvJEGQHVHE6MDBifPwDuhK0Nu1qxjR1eHn9oOU/viewform?entry.1210918600=trackID&entry.1145607281=ip&entry.833940562=hostname&entry.1616940506=city&entry.768400234=region&entry.626288021=country&entry.916117704=loc&entry.1292697802=org&entry.2103705445=postal";
-
-  var twohalf = pre_filled_google_form_url.split('viewform?');
+  twohalf = pre_filled_google_form_url.split('viewform?');
   twohalf[0] += "formResponse?";
   twohalf[1] += "&submit=Submit";
-
-  $.getJSON('http://ipinfo.io', function(data){
-    data['trackID'] = 'dummy';
-    for (key in data){
-      twohalf[1] = twohalf[1].replace(key, encodeURIComponent(data[key]));
-    }
-    var url = twohalf.join('');
-    // var xhr = new XMLHttpRequest();
-    // if ("withCredentials" in xhr) {
-    //   xhr.open('GET', url, true);
-    // } else if (typeof XDomainRequest != "undefined") {
-    //   xhr = new XDomainRequest();
-    //   xhr.open('GET', url);
-    // } else {
-    //   xhr = null;
-    // }
-    // xhr.send();
-
-    $.get(url, dataType='jsonp')
-    .fail(function(e) {
-      // pass
+  function sendBeacon(trackID){
+    $.getJSON('http://ipinfo.io', function(data){
+      data['trackID'] = trackID;
+      for (key in data){
+        twohalf[1] = twohalf[1].replace(key, encodeURIComponent(data[key]));
+      }
+      $.get(twohalf.join(''), dataType='jsonp')
+      .fail(function(e) {});
     });
+  }
+</script>
 
-    // $.ajax({
-    //   url: twohalf.join(''),
-    //   type: 'GET',
-    //   dataType: 'jsonp',
-    //   contentType: 'application/javascript',
-    // })
-  })
-  // d3.text("http://ipinfo.io", "application/json", function(response) {
-  //   //CORS url必须要有http://
-  //   console.log(response);
-  //   // d3.xhr("http://ec2-54-200-112-99.us-west-2.compute.amazonaws.com:5000/track/1")
-  //   //   .post(response)
-  //   $.ajax({
-  //       url: "https://docs.google.com/forms/d/14JwaHBvJEGQHVHE6MDBifPwDuhK0Nu1qxjR1eHn9oOU/formResponse",
-  //       data: {"org":"org1", "country":"c1"},
-  //       type: "POST",
-  //       dataType: 'jsonp',
-  //       contentType: 'application/javascript',
-  //       statusCode: {
-  //           0: function (){
-  //
-  //           },
-  //           200: function (){
-  //
-  //           }
-  //       }
-  //   });
-  // });
+<script type="text/javascript">
+  sendBeacon('dummy');
 </script>
 
 <footer>
@@ -84,3 +47,55 @@ This file is licensed under the MIT License. See LICENSE in the project root for
 </footer>
 </body>
 </html>
+
+
+<!-- // $.getJSON('http://ipinfo.io', function(data){
+  //   data['trackID'] = 'dummy';
+  //   for (key in data){
+    //     twohalf[1] = twohalf[1].replace(key, encodeURIComponent(data[key]));
+    //   }
+    //   var url = twohalf.join('');
+    //   // var xhr = new XMLHttpRequest();
+    //   // if ("withCredentials" in xhr) {
+      //   //   xhr.open('GET', url, true);
+      //   // } else if (typeof XDomainRequest != "undefined") {
+        //   //   xhr = new XDomainRequest();
+        //   //   xhr.open('GET', url);
+        //   // } else {
+          //   //   xhr = null;
+          //   // }
+          //   // xhr.send();
+          //
+          //   $.get(url, dataType='jsonp')
+          //   .fail(function(e) {
+            //     // pass
+            //   });
+            //
+            //   // $.ajax({
+              //   //   url: twohalf.join(''),
+              //   //   type: 'GET',
+              //   //   dataType: 'jsonp',
+              //   //   contentType: 'application/javascript',
+              //   // })
+              // });
+              // // d3.text("http://ipinfo.io", "application/json", function(response) {
+                // //   //CORS url必须要有http://
+                // //   console.log(response);
+                // //   // d3.xhr("http://ec2-54-200-112-99.us-west-2.compute.amazonaws.com:5000/track/1")
+                // //   //   .post(response)
+                // //   $.ajax({
+                  // //       url: "https://docs.google.com/forms/d/14JwaHBvJEGQHVHE6MDBifPwDuhK0Nu1qxjR1eHn9oOU/formResponse",
+                  // //       data: {"org":"org1", "country":"c1"},
+                  // //       type: "POST",
+                  // //       dataType: 'jsonp',
+                  // //       contentType: 'application/javascript',
+                  // //       statusCode: {
+                    // //           0: function (){
+                      // //
+                      // //           },
+                      // //           200: function (){
+                        // //
+                        // //           }
+                        // //       }
+                        // //   });
+                        // // }); -->
