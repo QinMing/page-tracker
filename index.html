@@ -32,8 +32,8 @@ This file is licensed under the MIT License. See LICENSE in the project root for
       for (key in data){
         twohalf[1] = twohalf[1].replace(key, encodeURIComponent(data[key]));
       }
-      $.get(twohalf.join(''), dataType='jsonp')
-      .fail(function(e) {});
+      $.get(twohalf.join(''));//, dataType='jsonp')
+      // .fail(function(e) {});
     });
   }
 </script>
